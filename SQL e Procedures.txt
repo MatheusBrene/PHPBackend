@@ -1,0 +1,203 @@
+//Criar Banco:
+CREATE DATABASE bd_backend;
+
+//criar tabelas
+CREATE TABLE categoria (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    informacoes VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE cliente (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE fornecedor (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL
+);
+
+//Procedures
+
+//Salvar e listar categoria
+DELIMITER $$
+
+CREATE PROCEDURE salvar_categoria(
+    IN p_id INT,
+    IN p_nome VARCHAR(100),
+    IN p_informacoes VARCHAR(255)
+)
+BEGIN
+
+    IF p_id IS NULL THEN
+
+        INSERT INTO categoria(
+            nome,
+            informacoes
+        )
+        VALUES(
+            p_nome,
+            p_informacoes
+        );
+
+    ELSE
+
+        UPDATE categoria
+        SET
+            nome = p_nome,
+            informacoes = p_informacoes
+        WHERE id = p_id;
+
+    END IF;
+
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE listar_categoria(
+    IN p_id INT
+)
+BEGIN
+
+    IF p_id IS NULL THEN
+
+        SELECT *
+        FROM categoria
+        ORDER BY nome;
+
+    ELSE
+
+        SELECT *
+        FROM categoria
+        WHERE id = p_id;
+
+    END IF;
+
+END $$
+
+DELIMITER ;
+
+//Salvar e listar clientes 
+DELIMITER $$
+
+CREATE PROCEDURE salvar_cliente(
+    IN p_id INT,
+    IN p_nome VARCHAR(100),
+    IN p_email VARCHAR(100)
+)
+BEGIN
+
+    IF p_id IS NULL THEN
+
+        INSERT INTO cliente(
+            nome,
+            email
+        )
+        VALUES(
+            p_nome,
+            p_email
+        );
+
+    ELSE
+
+        UPDATE cliente
+        SET
+            nome = p_nome,
+            email = p_email
+        WHERE id = p_id;
+
+    END IF;
+
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE listar_cliente(
+    IN p_id INT
+)
+BEGIN
+
+    IF p_id IS NULL THEN
+
+        SELECT *
+        FROM cliente
+        ORDER BY nome;
+
+    ELSE
+
+        SELECT *
+        FROM cliente
+        WHERE id = p_id;
+
+    END IF;
+
+END $$
+
+DELIMITER ;
+
+//Salvar e listas fornecedores
+DELIMITER $$
+
+CREATE PROCEDURE salvar_fornecedor(
+    IN p_id INT,
+    IN p_nome VARCHAR(100),
+    IN p_cidade VARCHAR(100)
+)
+BEGIN
+
+    IF p_id IS NULL THEN
+
+        INSERT INTO fornecedor(
+            nome,
+            cidade
+        )
+        VALUES(
+            p_nome,
+            p_cidade
+        );
+
+    ELSE
+
+        UPDATE fornecedor
+        SET
+            nome = p_nome,
+            cidade = p_cidade
+        WHERE id = p_id;
+
+    END IF;
+
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE listar_fornecedor(
+    IN p_id INT
+)
+BEGIN
+
+    IF p_id IS NULL THEN
+
+        SELECT *
+        FROM fornecedor
+        ORDER BY nome;
+
+    ELSE
+
+        SELECT *
+        FROM fornecedor
+        WHERE id = p_id;
+
+    END IF;
+
+END $$
+
+DELIMITER ;

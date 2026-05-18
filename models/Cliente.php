@@ -1,0 +1,71 @@
+<?php
+
+include_once 'Conn.php';
+
+class Cliente
+{
+    private $id;
+    private $nome;
+    private $email;
+    private $conn;
+
+    public function setId($id){
+        $this->id = $id;
+    }
+
+    public function setNome($nome){
+        $this->nome = $nome;
+    }
+
+    public function setEmail($email){
+        $this->email = $email;
+    }
+
+    public function salvar()
+    {
+        try {
+
+            $this->conn = new Conn();
+
+            $sql = "CALL salvar_cliente(?, ?, ?)";
+
+            $executar = $this->conn->prepare($sql);
+
+            $executar->bindValue(1, $this->id);
+            $executar->bindValue(2, mb_strtoupper($this->nome));
+            $executar->bindValue(3, $this->email);
+
+            return $executar->execute() == 1
+                ? true
+                : false;
+
+        } catch(PDOException $erro){
+
+            echo $erro->getMessage();
+
+        }
+    }
+
+    public function listar($var_id)
+    {
+        try {
+
+            $this->conn = new Conn();
+
+            $sql = "CALL listar_cliente(?)";
+
+            $executar = $this->conn->prepare($sql);
+
+            $executar->bindValue(1, $var_id);
+
+            return $executar->execute() == 1
+                ? $executar->fetchAll()
+                : false;
+
+        } catch(PDOException $erro){
+
+            echo $erro->getMessage();
+
+        }
+    }
+}

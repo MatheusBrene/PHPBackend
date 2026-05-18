@@ -1,0 +1,71 @@
+<?php
+
+include_once 'Conn.php';
+
+class Fornecedor
+{
+    private $id;
+    private $nome;
+    private $cidade;
+    private $conn;
+
+    public function setId($id){
+        $this->id = $id;
+    }
+
+    public function setNome($nome){
+        $this->nome = $nome;
+    }
+
+    public function setCidade($cidade){
+        $this->cidade = $cidade;
+    }
+
+    public function salvar()
+    {
+        try {
+
+            $this->conn = new Conn();
+
+            $sql = "CALL salvar_fornecedor(?, ?, ?)";
+
+            $executar = $this->conn->prepare($sql);
+
+            $executar->bindValue(1, $this->id);
+            $executar->bindValue(2, mb_strtoupper($this->nome));
+            $executar->bindValue(3, mb_strtoupper($this->cidade));
+
+            return $executar->execute() == 1
+                ? true
+                : false;
+
+        } catch(PDOException $erro){
+
+            echo $erro->getMessage();
+
+        }
+    }
+
+    public function listar($var_id)
+    {
+        try {
+
+            $this->conn = new Conn();
+
+            $sql = "CALL listar_fornecedor(?)";
+
+            $executar = $this->conn->prepare($sql);
+
+            $executar->bindValue(1, $var_id);
+
+            return $executar->execute() == 1
+                ? $executar->fetchAll()
+                : false;
+
+        } catch(PDOException $erro){
+
+            echo $erro->getMessage();
+
+        }
+    }
+}
